@@ -6,7 +6,7 @@ import queue
 
 vertex_c = []
 edge_c = []
-T = 10 # L is length of time slot in a period
+#T = 10 # L is length of time slot in a period
 
 
 
@@ -136,19 +136,19 @@ def tree_construction_based_mis(node_list):
 
     return black_nodes, blue_nodes, white_nodes
 
-def parent_node_list(node_list, children_list):
+def find_parent_node_list(node_list, children_list):
     parent_list =[]
     for each_node in children_list:
         if each_node not in parent_list:
             parent_list.append(node_list[each_node].parentID)
     return parent_list
 
-def EDAS(node_list):
+def EDAS(node_list, T=10):
     black_nodes, blue_nodes, white_nodes = tree_construction_based_mis(node_list)
-    parent_black_nodes = parent_node_list(node_list, black_nodes)
-    parent_blue_nodes = parent_node_list(node_list, blue_nodes)
-    parent_white_nodes = parent_node_list(node_list, white_nodes)
-
+    parent_black_nodes = find_parent_node_list(node_list, black_nodes)
+    parent_blue_nodes = find_parent_node_list(node_list, blue_nodes)
+    parent_white_nodes = find_parent_node_list(node_list, white_nodes)
+    print("type", type(link(1,2)))
     ts = 0
     links_selection(node_list, white_nodes, parent_white_nodes, ts)
 
@@ -159,6 +159,7 @@ def links_selection(node_list, Vc, F_Vc, ts):
         for vb in F_Vc:
             va = select_one_child(node_list, vb)
             Sc.append(link(va, vb))
+
             Vc.remove(va)
         #Apply algorithm 3
     return 1
@@ -170,5 +171,8 @@ def select_one_child(node_list, parent_node):
             t = each_child
     return t
 
-def link_schedule(node_list, candidate_links, ts, m):
+def link_schedule(node_list, candidate_links, ts , T, m):
+    for each_slot in range(0, T):
+        return 1
+
     return 1

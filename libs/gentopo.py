@@ -48,14 +48,14 @@ def random_rect(file_name=None, num_node=20, x_range=40, y_range=40, comm_range=
     # posRoot = (x_range/2, y_range/2)
     #root = node.Node(0, 0, 0)
     #node_list.append(root)
-    root = node.Node(0, x_range/2, y_range/2, active_slot=[random.randrange(0, time_slot-1, 1) for i in range(active_slot_no)])
+    root = node.Node(0, x_range/2, y_range/2, active_slot= random.sample(range(0, time_slot-1), active_slot_no))
     node_list.append(root)
     for i in range(1, num_node):
         while True:
             newPos = (random.randint(0, x_range), random.randint(0, y_range))#square topo
             if not check_pos_duplicated(newPos, node_list):
                 break
-        newNode = node.Node(ID=i, x=newPos[0], y=newPos[1], active_slot=[random.randrange(0, time_slot-1, 1) for i in range(active_slot_no)])
+        newNode = node.Node(ID=i, x=newPos[0], y=newPos[1], active_slot=random.sample(range(0, time_slot-1), active_slot_no))
         #print "New node:", newPos
         #newNode.ID = i
         node_list.append(newNode)

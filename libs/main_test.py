@@ -123,7 +123,7 @@ if __name__ == "__main__":
             Multi-channel Duty-cycle co-scheduling
             """
             multichannel_dutycycle_coscheduling.tree_construction_based_mis(node_list)
-            draw.draw(node_list)
+            #draw.draw(node_list)
             multichannel_dutycycle_coscheduling.EDAS(node_list)
 
             for u in range(1, len(node_list)):
