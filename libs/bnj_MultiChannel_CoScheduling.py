@@ -106,7 +106,10 @@ def assign_working_period(node_list, scheduled_nodes_list, x):
             z = z + 1
 
     if t != 0 and z != 0:
-        node_list[x].wp = max(wp_children_list) + 1
+        if max(wp_rx_node_layer_list) > max(wp_children_list):
+            node_list[x].wp = max(wp_rx_node_layer_list) + 1
+        else:
+            node_list[x].wp = max(wp_children_list) + 1
 
     if t != 0 and z == 0:
         node_list[x].wp = max(wp_rx_node_layer_list) + 1

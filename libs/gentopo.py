@@ -31,29 +31,31 @@ def check_pos_duplicated(pos, node_list):
         return False
 
 
-def random_rect(file_name=None, num_node=20, x_range=40, y_range=40, comm_range=25):
+def random_rect(file_name=None, num_node=20, x_range=40, y_range=40, comm_range=25, time_slot=10, active_slot_no=2):
     """
     The node_list of type 'node' will be created, including num_node sensors
     the root node is located at the center of the area
+    :param timeslot:
     :param file_name:
     :param num_node:
     :param x_range:
     :param y_range:
     :param comm_range:
+    :param t:
     :return:
     """
     node_list = []
     # posRoot = (x_range/2, y_range/2)
     #root = node.Node(0, 0, 0)
     #node_list.append(root)
-    root = node.Node(0, x_range/2, y_range/2)
+    root = node.Node(0, x_range/2, y_range/2, active_slot=[random.randrange(0, time_slot-1, 1) for i in range(active_slot_no)])
     node_list.append(root)
     for i in range(1, num_node):
         while True:
-            newPos = (random.randint(0, x_range), random.randint(0, y_range)) #square topo
+            newPos = (random.randint(0, x_range), random.randint(0, y_range))#square topo
             if not check_pos_duplicated(newPos, node_list):
                 break
-        newNode = node.Node(ID=i, x= newPos[0], y=newPos[1])
+        newNode = node.Node(ID=i, x=newPos[0], y=newPos[1], active_slot=[random.randrange(0, time_slot-1, 1) for i in range(active_slot_no)])
         #print "New node:", newPos
         #newNode.ID = i
         node_list.append(newNode)
@@ -87,11 +89,14 @@ def read_from_topo_repo(topofile, comm_range):
             #D = element[1]
             #L = element[3]
         else:  # from the second line, read ID, x, y of each node
+            active_slot = []
             id = int(element[0])
             x = int(element[1])
             y = int(element[2])
+            for item in range(3,len(element)-1):
+                active_slot.append(int(element[item]))
             #ts = int(element[3])
-            newnode = node.Node(id, x, y)
+            newnode = node.Node(id, x, y, active_slot)
             #newnode.ID = id
             node_list.append(newnode)
         index += 1

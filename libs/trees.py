@@ -26,6 +26,7 @@ def find_ancestor_nodes(node_list, x):
         while up != ancestor:
             up = node_list[up].parentID
             x.ancestorIDs.append(up)
+    return x.ancestorIDs
 
 def build_bfs(node_list):
     # Build a Breadth First Search Tree, equivalent to an SPT in case all edge costs are 1
@@ -49,7 +50,6 @@ def build_bfs(node_list):
         if count < len(node_list):
             print("Disconnected network!!!")
             return False
-
 
     for each_node in node_list:
         find_descendent_nodes(node_list, each_node)
@@ -284,4 +284,50 @@ def mlst(node_list):
             print("No node to add", not_added)
             return False
     return True, False
+
+def delay(node_list, sender, receiver, dutycycle):
+    """
+    returns the delay if sender choose the receiver to transmit data
+    :param sender: the sender
+    :param receiver: the receiver
+    :param dutycycle: the duty cycle
+    :return:
+    """
+    if node_list[sender].active_slot >= node_list[receiver].active_slot:
+        return dutycycle + node_list[receiver].active_slot - node_list[sender].active_slot
+    else:
+        return node_list[receiver].active_slot - node_list[sender].active_slot
+
+def dijkstra_duty_cycle_1slot(node_list, dutycycle):
+    """
+    building a Shortest Path Tree using Dijkstra algorithm, with link cost is the duty cycle delay
+    :param node_list:
+    :param dutycycle:
+    :return:
+    """
+    q = []
+    for i in range(0, len(node_list)):
+        node_list[i].distance = INFINITY
+        q.append(i)
+    node_list[0].distance = 0
+    while len(q) > 0:
+        receiver = min(q, key=lambda x: node_list[x].distance)
+        q.remove(receiver)
+        for sender in node_list[receiver].neighborIDs:
+            alt = node_list[receiver].distance + delay(node_list, sender, receiver, dutycycle)
+            if alt < node_list[sender].distance:
+                node_list[sender].distance = alt
+                node_list[sender].parentID = receiver
+
+    for i in range(0, len(node_list)):
+        if node_list[i].parentID is not None:
+            u = node_list[i].parentID
+            node_list[u].childrenIDs.append(i)
+        else:
+            # print(node_list[i].ID)  # root node
+            pass
+
+    for each_node in node_list:
+        find_descendent_nodes(node_list, each_node)
+        find_ancestor_nodes(node_list, each_node)
 

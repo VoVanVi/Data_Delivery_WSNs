@@ -5,13 +5,15 @@ Data structure of a network node
 
 class Node:
     ## The constructor
-    def __init__(self, ID=0, x=0.0, y=0.0):
+    def __init__(self, ID=0, x=0.0, y=0.0, active_slot= []):
         ## ID of a node
         self.ID = ID
         ## x-axis position
         self.x = x
         ## y-axis position
         self.y = y
+        ##active slot
+        self.active_slot = active_slot
         ##ID of ancestor
         self.ancestorIDs = []
         ## ID of the parent
@@ -27,7 +29,7 @@ class Node:
         ## list of neighbors in Constraint graph
         self.neighborIDs_gc = []
         ## active time slot
-        self.timeslot = 0
+        #self.timeslot = 0
         ## transmitting channel
         self.channel = 0
         ## receiving channel
@@ -43,6 +45,7 @@ class Node:
 
         self.next_layer_neighbors = []
         self.prev_layer_neighbors = []
+        self.current_layer_neighbors = []
 
         # list of working periods that this node will hear other transmissions
         self.overhearing = []
